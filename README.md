@@ -18,7 +18,7 @@ Designing and deploying a robust and secure company website that returns data fr
 ## LAMP Web Server on Linux
 Installed a LAMP web server to deliver a high-performance web application.
 
-# EC2
+## EC2
 
 - Provided anonymous access to web users.
 - I opened port 80 from the security group of the Cloud9 EC2 instance to allow inbound traffic on port 80.
