@@ -57,7 +57,7 @@ Check EC2 instance, newly created Cloud9 instance, Copy Public IPv4 address, and
 Check the security group of the instance; edit inbound rules - add a rule: HTTP - 0.0.0.0/0
 Refresh webpage: Example Social Research Organisation website opens
 
-Import the Database into the database
+Import the data into the database
 Download the SQL file from the external source
 Download database
 # wget https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/ILT-TF-200-ACACAD-20-EN/capstone-project/Countrydatadump.sql
