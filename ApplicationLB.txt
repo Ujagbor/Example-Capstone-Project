@@ -1,0 +1,22 @@
+Create Load balancer 
+EC2 - Load Balancer
+Select Application Load Balancer 
+	Load balancer name: CapstoneProject-LB
+Network mapping
+	VPC: ExampleVPC
+	Mappings: us-east-1a Public subnet1 & us-east-1b Public subnet2
+
+Security group: ALBSG
+
+Listeners and routing: Default
+
+Create Target Group:
+Target type: Instance 
+Target group name: CapstoneProject-TG
+VPC: Example VPC
+Register targets: Note there are 2 available targets; don't select instances
+Create 
+
+Refresh target group: Select CapstoneProject-TG
+
+Create LB	*Copy the DNS Name*
