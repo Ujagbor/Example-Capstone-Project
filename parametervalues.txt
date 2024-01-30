@@ -1,0 +1,16 @@
+Configure parameter values in AWS Systems Manager
+
+In AWS systems manager, 
+Create parameters for the following values 
+	Name: /example/endpoint Value: <rds-endpoint> 
+	Name: /example/username Value: admin
+	Name: /example/password Value: lab-password
+	Name: /example/database Value: Example
+
+Modify IAM role to cloud9 instance:
+Attach IAM role (Inventory-App-Role) to cloud9 EC2 instance 
+
+Create AMI for Autoscaling(Cloud9 Instance): 
+Select Cloud9 instance - Images and Templates - Create Image
+	Image Name: CapstoneProjectAMI
+	Description: AMI for CapstoneProject
