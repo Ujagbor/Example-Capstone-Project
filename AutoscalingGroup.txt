@@ -1,0 +1,46 @@
+Create Autoscaling Group  
+
+ASG Name: Example-ASG
+Launch Template: Example-LT 
+	Modify the template: Change the AMI ID to the newly created CapstoneProjectAMI 
+	Go to My AMIs - Owned by me: CapstoneProjectAMI 
+	Create 
+Refresh launch template
+Version: Latest (2)
+Network - VPC: ExampleVPC
+Private Subnet1
+Private Subnet2
+
+Navigate to NAT Gateway
+Create a NAT Gateway so that instances in the private subnet can connect outside VPC
+Name: Example-NatGateway
+Subnet: Public subnet 1
+Allocate elastic IP
+Create
+
+Modify Route table
+Select Private Route Table 1
+Edit routes: Add 0.0.0.0/0 to natgateway add created.
+Save
+
+Back to ASG
+Configure Load balancing
+Attach to an existing load balancer
+Load balancer target group: CapstoneProject-TG
+Health checks: Enable; Grace period: 60 or 90 seconds
+Monitoring: Enable
+Group size: 2
+Desired capacity: Min: 2; Max: 2
+Add tags: Name; Wendy-CapstoneProject
+Create				
+problem: why can't I use an updated version of the launch template (I think the IAM permission is limited)
+
+Copy the DNS of CapstoneProject-LB and paste it in a browser tab
+Result: Website loads successfully and click on query to verify data can be queried
+Successful!
+
+Another method to crosscheck:
+go to ASG, edit subnets to Public Subnet 1 and 2, and click on the instances created by the ASG titled "Wendy-CapstoneProject, stop and restart, no data will show, 
+Go back and select Private Subnets 1 and 2 and restart the instances.
+
+Complete.
