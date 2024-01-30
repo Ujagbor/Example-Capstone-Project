@@ -49,6 +49,6 @@ Provided high availability to the website through a load balancer
 - Provided automatic scaling that uses a launch template.
 - Created an AMI for the Cloud9 instance.
 - Modified the IAM role of the instance created by Cloud9 to enable queries on the website.
-- Modified the launch template with the recent version of the AMI. This allowed me to connect to the website by entering the Load Balancer's endpoint, it queried the data from the RDS database successfully too.
+- Modified the launch template with the recent version of the AMI. This allowed connection to the website by entering the Load Balancer's endpoint, it queried the data from the RDS database successfully too.
 
 
