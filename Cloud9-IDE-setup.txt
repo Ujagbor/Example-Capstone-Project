@@ -1,0 +1,59 @@
+Create a Cloud9 environment
+Name: Capstone Project
+Type: New EC2 instance
+Instance type: t2.micro
+Amazon Linux 2023
+Network settings
+VPC - Example VPC
+Connection: SSH
+Subnet: Public Subnet 2
+
+Install a LAMP web server on Amazon Linux 2023 on Cloud9
+Prepare the LAMP server:
+#sudo yum update -y
+#sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2 or
+**#sudo dnf install -y httpd wget php-fpm php-mysqli php-json php php-devel
+**#sudo dnf install mariadb105-server
+#sudo yum install -y httpd mariadb-server
+#sudo systemctl start httpd
+#sudo systemctl enable httpd
+#sudo systemctl is-enabled httpd
+
+Download the project assets:
+# wget https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/ILT-TF-200-ACACAD-20-EN/capstone-project/Example.zip
+
+Unzip the php file with the following command:
+ls
+mkdir Example
+sudo unzip Example.zip -d Example/
+sudo cp Example/* /var/www/html/
+
+Check EC2 instance, newly created Cloud9 instance, Copy Public IPv4 address, and paste it on a browser tab (webpage not loading)
+Check the security group of the instance; edit inbound rules - add a rule: HTTP - 0.0.0.0/0
+Refresh webpage: Example Social Research Organisation website opens
+
+Import the Database into the database
+Download the SQL file from the external source
+Download database
+# wget https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/ILT-TF-200-ACACAD-20-EN/capstone-project/Countrydatadump.sql
+
+Refresh the RDS database and your database instance is created
+
+Copy the endpoint of the DB: example.c7u2qe0u8xce.us-east-1.rds.amazonaws.com
+
+Go to security group- Example DBSG - edit inbound rule: add rule: MySQL/aurora; source: custom - cloud9 sg address 
+Save (WITH THIS, ONLY WE CAN BE ABLE TO IMPORT THE DATABASE)
+
+Import the file:
+# mysql -u admin -p example --host <rds-endpoint> < Countrydatadump.sql
+# mysql -u admin -p example --host example.c7u2qe0u8xce.us-east-1.rds.amazonaws.com < Countrydatadump.sql
+password: master password: ***
+Verify if the database is attached:
+# mysql -u admin -p --host <endpoint>
+# mysql -u admin -p --host example.c7u2qe0u8xce.us-east-1.rds.amazonaws.com
+Verify again if the database is attached with the following commands:
+# MySQL [(none)]> use Example;
+# MySQL [Example]> show tables;
+# MySQL [Example]> SELECT * FROM countrydata_final;
+# MySQL [Example]> exit;
+
