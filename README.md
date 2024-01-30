@@ -42,7 +42,7 @@ Installed a LAMP web server to deliver a high-performance web application.
 
 ## Application Load Balancer
 
-Provided high availability to the website through a load balancer
+Provided high availability to the website through an application load balancer
 
 ## Automatic Scaling Group
 
