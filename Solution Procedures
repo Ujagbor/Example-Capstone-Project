@@ -1,14 +1,12 @@
-Capstone Project :
+Example Capstone Project
 
-Steps Used to Create project:
-
-1. Create a database in RDS
-DB Name : Example
+STEP 1: Create a database in RDS
+DB Name: Example
 DB Engine: MySQL
 DB Template: Dev/Test
 Deployment: Multi-AZ DB instance
-Master Username : admin
-Master Password : lab-password 
+Master Username: admin
+Master Password : ***
 DB Instance Size: db.t3.micro
 Storage type: General purpose
 Allocated Storage: 20GiB
@@ -24,9 +22,7 @@ Monitoring: Disable
 Initial database name: Example
 Create database
 
-*** Don't wait for the database become available instead of do the next steps.
-
-Create a Cloud9 environment
+STEP 2: Create a Cloud9 environment
 Name: Capstone Project
 Type: New EC2 instance
 Instance type: t2.micro
