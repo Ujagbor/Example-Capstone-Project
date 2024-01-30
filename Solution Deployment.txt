@@ -23,6 +23,7 @@ Initial database name: Example
 Create database
 
 STEP 2: Create a Cloud9 environment
+Create a Cloud9 environment
 Name: Capstone Project
 Type: New EC2 instance
 Instance type: t2.micro
@@ -33,7 +34,7 @@ Connection: SSH
 Subnet: Public Subnet 2
 
 Install a LAMP web server on Amazon Linux 2023 on Cloud9
-Prepare the LAMP server
+Prepare the LAMP server:
 #sudo yum update -y
 #sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2 or
 **#sudo dnf install -y httpd wget php-fpm php-mysqli php-json php php-devel
@@ -43,98 +44,87 @@ Prepare the LAMP server
 #sudo systemctl enable httpd
 #sudo systemctl is-enabled httpd
 
-wget https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/ILT-TF-200-ACACAD-20-EN/capstone-project/Example.zip
+Download the project assets:
+# wget https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/ILT-TF-200-ACACAD-20-EN/capstone-project/Example.zip
 
-**something missing a title**
-
+Unzip the php file with the following command:
 ls
 mkdir Example
 sudo unzip Example.zip -d Example/
 sudo cp Example/* /var/www/html/
 
-Check EC2 instance; newly created Cloud9 instance, Copy Public IPv4 address and paste on a browser tab (not loading)
-
-Check security group of the instance; edit inbound rules - add rule: HTTP - 0.0.0.0/0
-
+Check EC2 instance, newly created Cloud9 instance, Copy Public IPv4 address, and paste it on a browser tab (webpage not loading)
+Check the security group of the instance; edit inbound rules - add a rule: HTTP - 0.0.0.0/0
 Refresh webpage: Example Social Research Organisation website opens
 
-Task : Import the Database into the database
-
-download the sql file from the lab page
-
+Import the Database into the database
+Download the SQL file from the external source
 Download database
-wget https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/ILT-TF-200-ACACAD-20-EN/capstone-project/Countrydatadump.sql
+# wget https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/ILT-TF-200-ACACAD-20-EN/capstone-project/Countrydatadump.sql
 
-Refresh RDS database and your databse instance is created
+Refresh the RDS database and your database instance is created
 
 Copy the endpoint of the DB: example.c7u2qe0u8xce.us-east-1.rds.amazonaws.com
 
-Go to security group- Example DBSG - edit inbound rule: add rule: mysql/aurora; source: custom - search for cloud9 sg address, select , save (WITH THIS, ONLY WE CAN BE ABLE TO IMPORT THE DATABASE)
+Go to security group- Example DBSG - edit inbound rule: add rule: MySQL/aurora; source: custom - cloud9 sg address 
+Save (WITH THIS, ONLY WE CAN BE ABLE TO IMPORT THE DATABASE)
 
-Immport the file:
+Import the file:
 # mysql -u admin -p example --host <rds-endpoint> < Countrydatadump.sql
-
 # mysql -u admin -p example --host example.c7u2qe0u8xce.us-east-1.rds.amazonaws.com < Countrydatadump.sql
+password: master password: ***
+Verify if the database is attached:
+# mysql -u admin -p --host <endpoint>
+# mysql -u admin -p --host example.c7u2qe0u8xce.us-east-1.rds.amazonaws.com
+Verify again if the database is attached with the following commands:
+# MySQL [(none)]> use Example;
+# MySQL [Example]> show tables;
+# MySQL [Example]> SELECT * FROM countrydata_final;
+# MySQL [Example]> exit;
 
-password: master password: lab-password
-Verify if database is attached:
-mysql -u admin -p --host <endpoint>
+STEP 3:Configure parameter values in AWS Systems Manager
 
-mysql -u admin -p --host example.c7u2qe0u8xce.us-east-1.rds.amazonaws.com
-
-Verify again if database is attached with the following commands:
-
-MySQL [(none)]> use Example;
-MySQL [Example]> show tables;
-MySQL [Example]> SELECT * FROM countrydata_final;
-MySQL [Example]> exit;
-
-Configure parameter values in AWS Systems Manager
-
-Step 1: Go to AWS systems manager 
-Create parameter for the following values 
+In AWS systems manager, 
+Create parameters for the following values 
 	Name: /example/endpoint Value: <rds-endpoint> 
 	Name: /example/username Value: admin
 	Name: /example/password Value: lab-password
 	Name: /example/database Value: Example
 
-Step 2: Modify IAM role to cloud9 instance
+Modify IAM role to cloud9 instance:
 Attach IAM role (Inventory-App-Role) to cloud9 EC2 instance 
 
-Create AMI for Autoscaling(Cloud9 Instance) 
-
+Create AMI for Autoscaling(Cloud9 Instance): 
 Select Cloud9 instance - Images and Templates - Create Image
 	Image Name: CapstoneProjectAMI
 	Description: AMI for CapstoneProject
 
-Create Load balancer 
-EC2 - Load Balncer
+STEP 4: Create Load balancer 
+EC2 - Load Balancer
 Select Application Load Balancer 
 	Load balancer name: CapstoneProject-LB
 Network mapping
 	VPC: ExampleVPC
 	Mappings: us-east-1a Public subnet1 & us-east-1b Public subnet2
-
 Security group: ALBSG
-
 Listeners and routing: Default
 
 Create Target Group:
 Target type: Instance 
 Target group name: CapstoneProject-TG
 VPC: Example VPC
-Register targets: Note there are 2 available targets; dont select instances
+Register targets: Note there are 2 available targets; don't select instances
 Create 
 
 Refresh target group: Select CapstoneProject-TG
 
 Create LB	*Copy the DNS Name*
 
-Create Autoscaling Group  
+STEP 5: Create Autoscaling Group  
 
 ASG Name: Example-ASG
 Launch Template: Example-LT 
-	Modify the template: Change the AMI ID to newly created CapstoneProjectAMI 
+	Modify the template: Change the AMI ID to the newly created CapstoneProjectAMI 
 	Go to My AMIs - Owned by me: CapstoneProjectAMI 
 	Create 
 Refresh launch template
@@ -143,40 +133,38 @@ Network - VPC: ExampleVPC
 Private Subnet1
 Private Subnet2
 
-Go to NAT Gateway
-Craete a NAT Gateway so that instances in the private subnet can connect outside vpc
+Navigate to NAT Gateway
+Create a NAT Gateway so that instances in the private subnet can connect outside VPC
 Name: Example-NatGateway
 Subnet: Public subnet 1
-allocate elastic IP
+Allocate elastic IP
 Create
 
-Route table
+Modify Route table
 Select Private Route Table 1
 Edit routes: Add 0.0.0.0/0 to natgateway add created.
-save
+Save
 
-Go back to ASG: Next
+Back to ASG
 Configure Load balancing
 Attach to an existing load balancer
 Load balancer target group: CapstoneProject-TG
-Health checks: Enable; Grace period" 60 or 90 seconds
+Health checks: Enable; Grace period: 60 or 90 seconds
 Monitoring: Enable
 Group size: 2
 Desired capacity: Min: 2; Max: 2
 Add tags: Name; Wendy-CapstoneProject
-Create				problem: why cant i use updated version of the launch tmplate
+Create				
+problem: why can't I use an updated version of the launch template (I think the IAM permission is limited)
 
-Copy the DNS of CapstoneProject-LB and paste in a browser
-Website loads and click on query to verify data can be queried
+Copy the DNS of CapstoneProject-LB and paste it in a browser tab
+Result: Website loads successfully and click on query to verify data can be queried
+Successful!
 
 Another method to crosscheck:
 go to ASG, edit subnets to Public Subnet 1 and 2, and click on the instances created by the ASG titled "Wendy-CapstoneProject, stop and restart, no data will show, 
-Go back and select Private Subnet 1 and 2 and restart the instances.
+Go back and select Private Subnets 1 and 2 and restart the instances.
 
-
-Final: 
-
-SSH access 
-Security group : Inventory-App: Add rule: SSH; Source: BastionSG
+Complete.
 
 You're all set!
