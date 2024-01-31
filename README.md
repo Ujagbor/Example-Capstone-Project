@@ -13,6 +13,8 @@ The website was moved to AWS recently by the company and now, the client wants t
 
 Designing and deploying a robust and secure company website that returns data from the query page. This project design architecture was solely on cost optimization, high availability, autoscaling, and security by selecting and making use of the most efficient computing resources when initializing processes, which could always be scaled up in case of business growth.
 
+![Capstone Diagram-Example drawio](https://github.com/Ujagbor/Example-Capstone-Project/assets/101636247/82883f5a-85d1-453a-8d44-e09f7552979b)
+
 ## Solution
 
 ## LAMP Web Server on Linux
