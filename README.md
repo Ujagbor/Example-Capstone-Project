@@ -1,4 +1,4 @@
-# Example-Capstone-Project
+# Example-Project-With-AWS
 
 **Example Social Research Organization is a (fictitious) nonprofit organization** that provides a website for social science researchers to obtain global development statistics. For example, visitors to the site can look up various data, such as the life expectancy for any country in the world over the past 10 years.
 
